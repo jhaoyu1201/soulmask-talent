@@ -121,6 +121,11 @@ body{background:var(--sand);font-family:'Noto Sans TC',sans-serif;color:var(--in
 .slot-filled-desc{font-size:11px;line-height:1.65;color:var(--ink2)}
 .slot-filled-cd{margin-top:.35rem;font-size:10px;color:var(--ink3)}
 .slot-cd-pill{display:inline-block;padding:1px 6px;border-radius:99px;background:var(--gold-lt);color:var(--gold);font-size:10px;font-weight:500}
+.slot-note-wrap{margin-top:.5rem;border-top:0.5px solid var(--sand3);padding-top:.5rem}
+.slot-note-label{font-size:9px;letter-spacing:.08em;color:var(--ink3);margin-bottom:3px}
+.slot-note-input{width:100%;padding:4px 7px;font-size:11px;font-family:'Noto Sans TC',sans-serif;color:var(--ink);background:#fff;border:0.5px solid var(--sand3);border-radius:6px;outline:none;resize:none;line-height:1.5}
+.slot-note-input:focus{border-color:var(--gold2)}
+.slot-note-input::placeholder{color:var(--ink3)}
 .empty-planner{padding:3rem 1rem;text-align:center;color:var(--ink3)}
 .empty-planner p{font-size:13px;margin-top:.5rem}
 mark{background:var(--gold-lt);color:var(--gold);border-radius:2px;padding:0 1px}
@@ -336,7 +341,7 @@ function addTribe() {
   const inp = document.getElementById('new-name');
   const name = inp.value.trim();
   if (!name) return;
-  tribes.push({id:uid(), name, talents:[null,null,null,null,null,null]});
+  tribes.push({id:uid(), name, talents:[null,null,null,null,null,null], notes:['','','','','','']});
   inp.value = '';
   renderPlan();
 }
@@ -379,7 +384,12 @@ function pickTalent(name) {
 
 function removeSlot(tribeId, slotIdx) {
   const t = getTribe(tribeId);
-  if (t) { t.talents[slotIdx] = null; renderPlan(); }
+  if (t) { t.talents[slotIdx] = null; t.notes[slotIdx] = ''; renderPlan(); }
+}
+
+function updateNote(tribeId, slotIdx, val) {
+  const t = getTribe(tribeId);
+  if (t) t.notes[slotIdx] = val;
 }
 
 function renderPlan() {
@@ -396,6 +406,7 @@ function renderPlan() {
       const cdHtml = tal.cd === '永久'
         ? `<div class="slot-filled-cd"><span class="slot-cd-pill">永久效果</span></div>`
         : hasCd ? `<div class="slot-filled-cd">冷卻 <b style="color:var(--ink2);font-weight:500">${tal.cd}</b></div>` : '';
+      const noteVal = (t.notes && t.notes[i]) ? t.notes[i] : '';
       return `<div class="slot-filled-card">
   <div class="slot-filled-head"><div class="slot-filled-name">${tal.name}</div><button class="slot-remove" onclick="removeSlot('${t.id}',${i})" title="移除">✕</button></div>
   <div class="slot-filled-badges">
@@ -405,6 +416,10 @@ function renderPlan() {
   </div>
   <div class="slot-filled-desc">${tal.desc}</div>
   ${cdHtml}
+  <div class="slot-note-wrap">
+    <div class="slot-note-label">族人 ID</div>
+    <textarea class="slot-note-input" rows="2" placeholder="輸入擁有此天賦的族人 ID，例如：A001、獵手1…" oninput="updateNote('${t.id}',${i},this.value)">${noteVal}</textarea>
+  </div>
 </div>`;
     }).join('');
 
