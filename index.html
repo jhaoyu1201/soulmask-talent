@@ -1,6 +1,12 @@
-
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>靈魂面甲 天賦查詢 · 族人規劃</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700&family=Noto+Sans+TC:wght@300;400;500&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
   --ink:#1a1612;--ink2:#4a4540;--ink3:#8a8480;
@@ -16,7 +22,8 @@
   --job:#3a1a6b;--job-lt:#e8d8f5;
   --red:#8b1a1a;
 }
-.app{background:var(--sand);font-family:'Noto Sans TC',sans-serif;color:var(--ink);min-height:500px}
+body{background:var(--sand);font-family:'Noto Sans TC',sans-serif;color:var(--ink);min-height:100vh;max-width:960px;margin:0 auto}
+/* HERO */
 .hero{background:var(--ink);padding:1.75rem 1.75rem 1.4rem;position:relative;overflow:hidden}
 .hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 40px,rgba(255,255,255,.012) 40px,rgba(255,255,255,.012) 41px)}
 .hero-eye{font-size:10px;letter-spacing:.2em;color:var(--gold2);margin-bottom:.4rem}
@@ -24,10 +31,18 @@
 .hero-sub{font-size:12px;color:#7a7468;letter-spacing:.04em}
 .deco{position:absolute;right:1.5rem;top:50%;transform:translateY(-50%);width:72px;height:72px;border:1px solid rgba(196,154,42,.18);border-radius:50%;display:flex;align-items:center;justify-content:center}
 .deco-inner{width:26px;height:26px;border:1.5px solid rgba(196,154,42,.45);transform:rotate(45deg)}
+/* TABS */
 .tabs{display:flex;border-bottom:0.5px solid var(--sand3);background:#fff}
 .tab{flex:1;padding:.7rem 1rem;font-size:13px;font-weight:500;color:var(--ink3);cursor:pointer;border-bottom:2px solid transparent;text-align:center;transition:all .15s;font-family:'Noto Sans TC',sans-serif;background:none;border-top:none;border-left:none;border-right:none}
 .tab:hover{color:var(--ink2)}.tab.on{color:var(--gold);border-bottom-color:var(--gold2)}
+/* PANELS */
 .panel{display:none;padding:1.1rem 1.25rem}.panel.on{display:block}
+/* LOADING */
+.loading{padding:3rem;text-align:center;color:var(--ink3)}
+.loading-spinner{width:32px;height:32px;border:2px solid var(--sand3);border-top-color:var(--gold2);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 1rem}
+@keyframes spin{to{transform:rotate(360deg)}}
+.error-box{background:#fff;border:0.5px solid var(--sand3);border-left:3px solid var(--red);border-radius:12px;padding:1rem 1.25rem;margin-bottom:1rem;font-size:13px;color:var(--red)}
+/* SEARCH & FILTER */
 .search-wrap{position:relative;margin-bottom:.85rem}
 .search-wrap svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);width:14px;height:14px;color:var(--ink3);pointer-events:none}
 .search-wrap input{width:100%;padding:10px 12px 10px 38px;border:0.5px solid var(--sand3);border-radius:10px;background:#fff;font-size:13.5px;font-family:'Noto Sans TC',sans-serif;color:var(--ink);outline:none;transition:border-color .15s}
@@ -46,6 +61,9 @@
 .catk.on{background:#8b2a2a}.cdef.on{background:#1a4a6b}.coth.on{background:#3a6b1a}
 .meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:.65rem}
 .meta-count{font-size:12px;color:var(--ink3)}.meta-count b{color:var(--ink);font-weight:500}
+.refresh-btn{font-size:11px;color:var(--ink3);cursor:pointer;background:none;border:0.5px solid var(--sand3);border-radius:6px;padding:3px 10px;font-family:'Noto Sans TC',sans-serif;transition:all .15s}
+.refresh-btn:hover{border-color:var(--gold2);color:var(--gold)}
+/* TALENT CARDS */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:.55rem}
 .tcard{background:#fff;border:0.5px solid var(--sand3);border-radius:12px;padding:.9rem 1rem;border-left:3px solid transparent;transition:all .15s;position:relative}
 .tcard:hover{border-left-color:var(--gold2)}
@@ -68,9 +86,11 @@
 .add-btn:hover{background:var(--gold)}
 .tcard.selectable:hover .add-btn{display:flex}
 .tcard.picked .add-btn{display:flex;background:var(--red);font-size:14px}
+/* BANNER */
 .selecting-banner{background:var(--gold-lt);border:0.5px solid var(--gold2);border-radius:10px;padding:.65rem 1rem;margin-bottom:.85rem;font-size:12.5px;color:var(--gold);display:flex;align-items:center;justify-content:space-between;gap:8px}
 .cancel-btn{padding:4px 10px;border-radius:6px;border:0.5px solid var(--gold2);background:transparent;color:var(--gold);font-size:11.5px;cursor:pointer;font-family:'Noto Sans TC',sans-serif;white-space:nowrap}
 .cancel-btn:hover{background:var(--gold2);color:#fff}
+/* PLANNER */
 .planner-top{display:flex;gap:.6rem;align-items:center;margin-bottom:1rem;flex-wrap:wrap}
 .planner-top input{flex:1;min-width:140px;padding:8px 12px;border:0.5px solid var(--sand3);border-radius:8px;background:#fff;font-size:13px;font-family:'Noto Sans TC',sans-serif;color:var(--ink);outline:none}
 .planner-top input:focus{border-color:var(--gold2)}
@@ -105,59 +125,72 @@
 .empty-planner p{font-size:13px;margin-top:.5rem}
 mark{background:var(--gold-lt);color:var(--gold);border-radius:2px;padding:0 1px}
 </style>
+</head>
+<body>
 
-<div class="app">
-<h2 style="position:absolute;width:1px;height:1px;overflow:hidden">靈魂面甲天賦規劃器</h2>
 <div class="hero">
   <div class="hero-eye">SOULMASK · TALENT DATABASE</div>
   <div class="hero-title">天賦查詢 · 族人規劃</div>
-  <div class="hero-sub">本體 + 浮沙DLC · 全天賦整合版</div>
+  <div class="hero-sub">本體 + 浮沙DLC · 資料來源：Google Sheets 即時同步</div>
   <div class="deco"><div class="deco-inner"></div></div>
 </div>
+
 <div class="tabs">
   <button class="tab on" onclick="switchTab('db')">天賦資料庫</button>
   <button class="tab" onclick="switchTab('plan')">族人規劃</button>
 </div>
+
 <div class="panel on" id="panel-db">
-  <div class="search-wrap">
-    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="5.5" cy="5.5" r="4"/><line x1="8.8" y1="8.8" x2="13" y2="13"/></svg>
-    <input type="text" id="q" placeholder="搜尋天賦名稱、效果…" oninput="renderDB()">
+  <div id="db-loading" class="loading">
+    <div class="loading-spinner"></div>
+    <div>正在從 Google Sheets 載入天賦資料…</div>
   </div>
-  <div class="filters">
-    <div class="frow">
-      <span class="flbl">來源</span>
-      <div class="chips" id="sg">
-        <button class="chip ca on" data-v="all" onclick="sf(this,'src')">全部</button>
-        <button class="chip cdc" data-v="DLC" onclick="sf(this,'src')">浮沙DLC</button>
-        <button class="chip cb" data-v="本體" onclick="sf(this,'src')">本體</button>
+  <div id="db-error" class="error-box" style="display:none"></div>
+  <div id="db-content" style="display:none">
+    <div class="search-wrap">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="5.5" cy="5.5" r="4"/><line x1="8.8" y1="8.8" x2="13" y2="13"/></svg>
+      <input type="text" id="q" placeholder="搜尋天賦名稱、效果…" oninput="renderDB()">
+    </div>
+    <div class="filters">
+      <div class="frow">
+        <span class="flbl">來源</span>
+        <div class="chips" id="sg">
+          <button class="chip ca on" data-v="all" onclick="sf(this,'src')">全部</button>
+          <button class="chip cdc" data-v="DLC" onclick="sf(this,'src')">浮沙DLC</button>
+          <button class="chip cb" data-v="本體" onclick="sf(this,'src')">本體</button>
+        </div>
+      </div>
+      <div class="frow">
+        <span class="flbl">分類</span>
+        <div class="chips" id="cat-g">
+          <button class="chip ca on" data-v="all" onclick="sf(this,'cat')">全部</button>
+          <button class="chip catk" data-v="攻擊" onclick="sf(this,'cat')">攻擊型</button>
+          <button class="chip cdef" data-v="防禦" onclick="sf(this,'cat')">防禦型</button>
+          <button class="chip coth" data-v="其他" onclick="sf(this,'cat')">其他</button>
+        </div>
+      </div>
+      <div class="frow">
+        <span class="flbl">專屬</span>
+        <div class="chips" id="tg">
+          <button class="chip ca on" data-v="all" onclick="sf(this,'tag')">全部</button>
+          <button class="chip cw" data-v="荒狼" onclick="sf(this,'tag')">荒狼</button>
+          <button class="chip ch" data-v="蠻角" onclick="sf(this,'tag')">蠻角</button>
+          <button class="chip cwr" data-v="戰士" onclick="sf(this,'tag')">戰士</button>
+          <button class="chip cg" data-v="衛士" onclick="sf(this,'tag')">衛士</button>
+          <button class="chip chu" data-v="獵手" onclick="sf(this,'tag')">獵手</button>
+          <button class="chip cge" data-v="通用" onclick="sf(this,'tag')">通用</button>
+          <button class="chip cj" data-v="職業" onclick="sf(this,'tag')">職業專屬</button>
+        </div>
       </div>
     </div>
-    <div class="frow">
-      <span class="flbl">分類</span>
-      <div class="chips" id="cat-g">
-        <button class="chip ca on" data-v="all" onclick="sf(this,'cat')">全部</button>
-        <button class="chip catk" data-v="攻擊" onclick="sf(this,'cat')">攻擊型</button>
-        <button class="chip cdef" data-v="防禦" onclick="sf(this,'cat')">防禦型</button>
-        <button class="chip coth" data-v="其他" onclick="sf(this,'cat')">其他</button>
-      </div>
+    <div class="meta">
+      <div class="meta-count">找到 <b id="rc">0</b> 條天賦</div>
+      <button class="refresh-btn" onclick="loadData()">↻ 重新載入</button>
     </div>
-    <div class="frow">
-      <span class="flbl">專屬</span>
-      <div class="chips" id="tg">
-        <button class="chip ca on" data-v="all" onclick="sf(this,'tag')">全部</button>
-        <button class="chip cw" data-v="荒狼" onclick="sf(this,'tag')">荒狼</button>
-        <button class="chip ch" data-v="蠻角" onclick="sf(this,'tag')">蠻角</button>
-        <button class="chip cwr" data-v="戰士" onclick="sf(this,'tag')">戰士</button>
-        <button class="chip cg" data-v="衛士" onclick="sf(this,'tag')">衛士</button>
-        <button class="chip chu" data-v="獵手" onclick="sf(this,'tag')">獵手</button>
-        <button class="chip cge" data-v="通用" onclick="sf(this,'tag')">通用</button>
-        <button class="chip cj" data-v="職業" onclick="sf(this,'tag')">職業專屬</button>
-      </div>
-    </div>
+    <div class="grid" id="grid"></div>
   </div>
-  <div class="meta"><div class="meta-count">找到 <b id="rc">0</b> 條天賦</div></div>
-  <div class="grid" id="grid"></div>
 </div>
+
 <div class="panel" id="panel-plan">
   <div id="selecting-banner" style="display:none" class="selecting-banner">
     <span id="banner-text"></span>
@@ -169,289 +202,277 @@ mark{background:var(--gold-lt);color:var(--gold);border-radius:2px;padding:0 1px
   </div>
   <div class="tribe-list" id="tribe-list"></div>
   <div class="empty-planner" id="empty-plan">
-    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.2" style="margin:0 auto;display:block;color:var(--sand3)"><circle cx="20" cy="20" r="16"/><line x1="20" y1="12" x2="20" y2="22"/><circle cx="20" cy="27" r="1.5" fill="currentColor" stroke="none"/></svg>
+    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.2" style="margin:0 auto;display:block;color:#ddd6c6"><circle cx="20" cy="20" r="16"/><line x1="20" y1="12" x2="20" y2="22"/><circle cx="20" cy="27" r="1.5" fill="currentColor" stroke="none"/></svg>
     <p>還沒有族人，先新增一位吧！</p>
   </div>
 </div>
-</div>
 
 <script>
-const SRC={DLC:"浮沙DLC",本體:"本體"};
-const BD_SRC={DLC:"bd-dlc",本體:"bd-base"};
-const BD_TAG={荒狼:"bd-wolf",蠻角:"bd-horn",戰士:"bd-warrior",衛士:"bd-guard",獵手:"bd-hunter",通用:"bd-general",職業:"bd-job"};
-const BD_CAT={攻擊:"bd-atk",防禦:"bd-def",其他:"bd-oth"};
-const CAT_LBL={攻擊:"攻擊型",防禦:"防禦型",其他:"其他"};
-const ACOLORS=["#2C2C2A","#0d5c4a","#1a3a6b","#6b1a3a","#7a4a10","#2a5a10","#3a1a6b","#7a3a1a"];
-
-const DATA=[
-  // ── DLC ──
-  {src:"DLC",cat:"防禦",tag:"通用",name:"微風勁雨",desc:"自身移動速度永久降低 30%，但攻擊速度提升 30%。",cd:"永久"},
-  {src:"DLC",cat:"防禦",tag:"荒狼",name:"群狼庇護",desc:"生命值回滿或從瀕死恢復時，使自己及 10 米範圍內的友方族人不受絕大多數減速效果影響，持續 12 秒。",cd:"30s"},
-  {src:"DLC",cat:"防禦",tag:"蠻角",name:"蠻角庇護",desc:"生命值回滿或從瀕死恢復時，使自己及 10 米範圍內的友方族人不被造成暴擊，持續 12 秒。",cd:"30s"},
-  {src:"DLC",cat:"攻擊",tag:"通用",name:"回光反擊",desc:"生命值回滿或從瀕死恢復後 6 秒內，受到來自 5 米以內的攻擊，返還 100% 傷害給攻擊者。",cd:"30s"},
-  {src:"DLC",cat:"防禦",tag:"通用",name:"攫體化血",desc:"生命值低於 50% 時觸發，在 12 秒內受到的傷害轉換為同比例的體力傷害。此期間體力不會自然恢復，直至體力耗盡。",cd:"30s"},
-  {src:"DLC",cat:"防禦",tag:"通用",name:"攫體化韌",desc:"生命值低於 50% 時觸發，在 12 秒內受到的韌性傷害轉換為體力傷害。此期間體力不會自然恢復，直至體力耗盡。",cd:"30s"},
-  {src:"DLC",cat:"防禦",tag:"通用",name:"強韌愈合",desc:"生命值高於 70% 時受到傷害，每秒恢復基於防御力 30% 的生命至滿。",cd:"—"},
-  {src:"DLC",cat:"防禦",tag:"通用",name:"誓死決心",desc:"生命值低於 50% 時觸發，無法閃避和衝刺，但不會受到任何硬直和絕大多數減速效果，持續 25 秒。",cd:"60s"},
-  {src:"DLC",cat:"防禦",tag:"通用",name:"余燄",desc:"生命耗盡時不會進入瀕死，在 12 秒內可額外承受 9 次致死攻擊，次數耗盡則立即死亡。",cd:"45s"},
-  {src:"DLC",cat:"其他",tag:"通用",name:"體力虹吸",desc:"攻擊命中目標時有 15% 概率觸發，使其在 12 秒內每次攻擊額外消耗 20 點體力，並為施加者恢復 20 點體力。",cd:"—"},
-  {src:"DLC",cat:"攻擊",tag:"通用",name:"竭血逐攻",desc:"受到攻擊時有 25% 概率觸發，在 12 秒內降低自身 50% 最大生命，換來 50% 的攻擊力提升。",cd:"30s"},
-  {src:"DLC",cat:"防禦",tag:"通用",name:"免傷祈佑",desc:"受到攻擊時有 15% 概率觸發，在 12 秒內敵人對自己造成的傷害始終按最低值進行計算。",cd:"30s"},
-  {src:"DLC",cat:"攻擊",tag:"通用",name:"染血荊棘",desc:"自身處於流血狀態時，也會將流血效果傳遞給 3 米範圍內的敵人。",cd:"—"},
-  {src:"DLC",cat:"防禦",tag:"通用",name:"生命枷鎖",desc:"受到攻擊時有 15% 概率觸發，在 25 秒內徹底失去生命恢復能力，但每次受到傷害至多失去 2% 最大生命。",cd:"60s"},
-  {src:"DLC",cat:"其他",tag:"蠻角",name:"嫁禍",desc:"受到攻擊時有 15% 概率觸發，在 12 秒內能將敵人施加的持續效果轉移到 15 米範圍內其他敵人身上。",cd:"30s"},
-  {src:"DLC",cat:"其他",tag:"荒狼",name:"狡詐",desc:"受到攻擊時有 15% 概率觸發，在 12 秒內能將敵人施加的持續效果返還給施加者。",cd:"30s"},
-  {src:"DLC",cat:"防禦",tag:"通用",name:"禁忌之軀",desc:"受到攻擊時有 15% 概率觸發，使攻擊者在 15 秒內所有天賦無法觸發。",cd:"40s"},
-  {src:"DLC",cat:"攻擊",tag:"通用",name:"暴走",desc:"身體同時存在點燃、中毒、流血時，進入 15 秒「暴走」狀態：增加 20% 攻速、移速，傷害的 20% 轉化為生命恢復，免疫絕大部分減速效果。",cd:"30s"},
-  {src:"DLC",cat:"其他",tag:"通用",name:"勇氣激流",desc:"攻擊命中目標時有 15% 概率觸發，清除自身天賦的冷卻狀態。",cd:"30s"},
-  {src:"DLC",cat:"攻擊",tag:"通用",name:"增傷祈佑",desc:"攻擊命中目標時有 15% 概率觸發，使接下來對目標造成的 10 次武器傷害鎖定為近期最高傷害值，持續 12 秒。",cd:"30s"},
-  {src:"DLC",cat:"防禦",tag:"蠻角",name:"潰防衝擊",desc:"攻擊目標時若目標在防御狀態，有 15% 概率清空其體力並破壞其防御狀態。",cd:"5s"},
-  {src:"DLC",cat:"攻擊",tag:"荒狼",name:"增傷竊取",desc:"攻擊命中目標時有 15% 概率觸發，竊取目標 10% 的傷害提升，持續 12 秒，至多疊加 5 層。",cd:"—"},
-  {src:"DLC",cat:"防禦",tag:"蠻角",name:"免傷竊取",desc:"攻擊命中目標時有 15% 概率觸發，竊取目標 10% 的傷害減免，持續 12 秒，至多疊加 5 層。",cd:"—"},
-  {src:"DLC",cat:"攻擊",tag:"戰士",name:"攻擊竊取",desc:"攻擊命中目標時有 15% 概率觸發，竊取目標當前 10% 攻擊（至多 30 點），持續 12 秒，至多疊加 5 層。",cd:"—"},
-  {src:"DLC",cat:"防禦",tag:"衛士",name:"防御竊取",desc:"攻擊命中目標時有 15% 概率觸發，竊取目標當前 10% 防御（至多 40 點），持續 12 秒，至多疊加 5 層。",cd:"—"},
-  {src:"DLC",cat:"其他",tag:"獵手",name:"體力竊取",desc:"攻擊命中目標時有 15% 概率觸發，竊取目標當前 10% 的最大體力（至多 30 點），持續 12 秒，至多疊加 5 層。",cd:"—"},
-  {src:"DLC",cat:"攻擊",tag:"通用",name:"暴擊竊取",desc:"攻擊命中目標時有 15% 概率觸發，竊取目標 5% 暴擊、10% 暴傷提升，持續 12 秒，至多疊加 5 層。",cd:"—"},
-  {src:"DLC",cat:"防禦",tag:"通用",name:"暴抗竊取",desc:"攻擊命中目標時有 15% 概率觸發，竊取目標 5% 暴抗、10% 暴傷減免，持續 12 秒，至多疊加 5 層。",cd:"—"},
-  {src:"DLC",cat:"防禦",tag:"通用",name:"喘息之機",desc:"首次受到武器攻擊後，該傷害將在 3 秒內恢復。若恢復期間再次受到武器攻擊，則立即對自身造成與首次武器攻擊相等的傷害，並終止恢復效果。",cd:"5s"},
-  {src:"DLC",cat:"攻擊",tag:"通用",name:"攻防共鳴・攻",desc:"攻擊命中目標時有 20% 概率觸發，提升自身「攻擊力」與「防御力」中較低的一項，幅度為較高項的 20%，持續 12 秒。",cd:"30s"},
-  {src:"DLC",cat:"攻擊",tag:"通用",name:"傷害共鳴・攻",desc:"攻擊命中目標時有 20% 概率觸發，提升自身「傷害提升」與「傷害減免」中較低的一項，幅度為較高項的 50%，持續 12 秒。",cd:"30s"},
-  {src:"DLC",cat:"攻擊",tag:"通用",name:"傷害流轉・攻",desc:"攻擊命中目標時有 15% 概率觸發，將當前全部「傷害減免」按 50% 比例轉化為「傷害提升」，持續 12 秒。",cd:"30s"},
-  {src:"DLC",cat:"攻擊",tag:"通用",name:"攻防流轉・攻",desc:"攻擊命中目標時有 15% 概率觸發，將當前全部防御力按 50% 比例轉換為攻擊力，持續 12 秒。",cd:"30s"},
-  // ── 本體 攻擊型 ──
-  {src:"本體",cat:"攻擊",tag:"通用",name:"各類武器增傷",desc:"各類別武器造成傷害提升 9%。",cd:"—"},
-  {src:"本體",cat:"攻擊",tag:"通用",name:"大劍增傷",desc:"大劍傷害提升 9%。",cd:"—"},
-  {src:"本體",cat:"攻擊",tag:"通用",name:"長矛增傷",desc:"長矛傷害提升 9%。",cd:"—"},
-  {src:"本體",cat:"攻擊",tag:"通用",name:"單刀增傷",desc:"單刀傷害提升 9%。",cd:"—"},
-  {src:"本體",cat:"攻擊",tag:"通用",name:"弓箭增傷",desc:"弓箭傷害提升 9%。",cd:"—"},
-  {src:"本體",cat:"攻擊",tag:"通用",name:"雙刀增傷",desc:"雙刀傷害提升 9%。",cd:"—"},
-  {src:"本體",cat:"攻擊",tag:"通用",name:"拳套增傷",desc:"拳套傷害提升 9%。",cd:"—"},
-  {src:"本體",cat:"攻擊",tag:"通用",name:"大錘增傷",desc:"大錘傷害提升 9%。",cd:"—"},
-  {src:"本體",cat:"攻擊",tag:"通用",name:"強力攻擊",desc:"攻擊提升 9%。",cd:"—"},
-  {src:"本體",cat:"攻擊",tag:"通用",name:"攻勢凌厲",desc:"攻擊速度提升 9%。",cd:"—"},
-  {src:"本體",cat:"攻擊",tag:"通用",name:"遠程打擊",desc:"對 15 米外敵人造成傷害提升 9%。",cd:"—"},
-  {src:"本體",cat:"攻擊",tag:"通用",name:"直擊要害",desc:"攻擊 15 米外敵人弱點部位時，使本次部位傷害提升 25%。",cd:"—"},
-  {src:"本體",cat:"攻擊",tag:"通用",name:"擅長肉搏",desc:"對 5 米內敵人造成的傷害提升 9%。",cd:"—"},
-  {src:"本體",cat:"攻擊",tag:"通用",name:"攻其不備",desc:"有 20% 機率將攻擊到的任意部位視為弱點部位。",cd:"—"},
-  {src:"本體",cat:"攻擊",tag:"通用",name:"頭部破壞",desc:"攻擊到頭部時，有 20% 機率增傷 25%。",cd:"—"},
-  {src:"本體",cat:"攻擊",tag:"通用",name:"軀幹破壞",desc:"攻擊到軀幹時，有 20% 機率增傷 25%。",cd:"—"},
-  {src:"本體",cat:"攻擊",tag:"通用",name:"肢體破壞",desc:"攻擊到四肢時，有 20% 機率增傷 25%。",cd:"—"},
-  {src:"本體",cat:"攻擊",tag:"通用",name:"尾部破壞",desc:"攻擊到尾部時，有 20% 機率增傷 25%。",cd:"—"},
-  {src:"本體",cat:"攻擊",tag:"通用",name:"弱點重擊",desc:"攻擊對方弱點部位時 25% 機率使該次傷害提升 25%。",cd:"—"},
-  {src:"本體",cat:"攻擊",tag:"通用",name:"兩敗俱傷",desc:"弱點部位受到攻擊時，25% 機率對敵人弱點部位傷害提升 60%，但自己弱點部位受到的傷害也提升 60%，持續 15 秒。",cd:"25s"},
-  {src:"本體",cat:"攻擊",tag:"通用",name:"鮮血吸收",desc:"對 5 米內敵人造成傷害有 25% 機率吸收 30 生命。",cd:"—"},
-  {src:"本體",cat:"攻擊",tag:"通用",name:"渴望鮮血",desc:"攻擊 5 米內敵人時有 25% 機率吸收該次傷害 30% 的生命值。",cd:"—"},
-  {src:"本體",cat:"攻擊",tag:"通用",name:"技巧恢復",desc:"成功彈反攻擊後將恢復本次受到傷害的 35% 生命。",cd:"—"},
-  {src:"本體",cat:"攻擊",tag:"通用",name:"浴血恢復",desc:"受到攻擊時 20% 機率使自己每秒恢復攻擊力 30% 的生命值，但自身受到的傷害增加 30%，持續 15 秒。",cd:"25s"},
-  {src:"本體",cat:"攻擊",tag:"通用",name:"手段殘忍",desc:"擊殺敵人後，削弱尸體 10 米內敵人攻速 -15%、爆抗 -20%、防禦 -20%，持續 20 秒。",cd:"—"},
-  {src:"本體",cat:"攻擊",tag:"通用",name:"屠戮狂熱",desc:"每擊敗一名敵人疊加一層暴擊、爆抗、爆傷、移速均增加 4% 的效果。",cd:"—"},
-  {src:"本體",cat:"攻擊",tag:"通用",name:"敵殞狂熱",desc:"10 米內有敵人瀕死或死亡會獲得一層暴擊／爆抗／爆傷／移速提升 4% 的效果，持續 30 秒，最多五層。",cd:"—"},
-  {src:"本體",cat:"攻擊",tag:"通用",name:"轉守為攻",desc:"彈反近距離攻擊後返還本次傷害的 50% 給攻擊者。",cd:"—"},
-  {src:"本體",cat:"攻擊",tag:"通用",name:"避實擊虛",desc:"閃避敵人攻擊後移速 +30%、攻速 +30%、攻擊 +10%，持續 5 秒。",cd:"10s"},
-  {src:"本體",cat:"攻擊",tag:"通用",name:"舍命相搏",desc:"受到攻擊時，20% 機率增加 30% 攻擊力，降低 50% 防禦，持續 15 秒。",cd:"25s"},
-  {src:"本體",cat:"攻擊",tag:"通用",name:"穿透防禦",desc:"命中時 15% 機率使本次傷害無視防禦。",cd:"2s"},
-  {src:"本體",cat:"攻擊",tag:"通用",name:"心念合一",desc:"攻擊命中時 20% 機率進入心流，10 秒內自身所有概率觸發的天賦必定觸發。",cd:"25s"},
-  {src:"本體",cat:"攻擊",tag:"通用",name:"奮起反擊",desc:"頭部以外部位受到 5 米內攻擊時返還 20% 傷害於攻擊者。",cd:"—"},
-  {src:"本體",cat:"攻擊",tag:"通用",name:"惡意",desc:"攻擊 5 米內處於中毒、燒傷、流血狀態的目標時，有 15% 的機率觸發額外效果。",cd:"—"},
-  {src:"本體",cat:"攻擊",tag:"通用",name:"抑制暴力",desc:"命中目標有 15% 機率對其造成一層暴擊率降低 7% 的效果，持續 15 秒，至多疊五層。",cd:"—"},
-  {src:"本體",cat:"攻擊",tag:"通用",name:"野性覺醒",desc:"血量低於 30% 時攻擊提升 20% 且每秒回復 20 體力，但防禦降低 20%，持續 15 秒。",cd:"30s"},
-  {src:"本體",cat:"攻擊",tag:"通用",name:"復仇之怒",desc:"10 米內有友方瀕死或死亡，攻擊提升 20%、防禦提升 25%、攻速提升 10%、移速提升 15%、每秒恢復 20 體力，持續 20 秒。",cd:"50s"},
-  {src:"本體",cat:"攻擊",tag:"通用",name:"致命",desc:"對生命 30% 以下目標造成傷害時，20% 機率使該次傷害提升 25%。",cd:"—"},
-  {src:"本體",cat:"攻擊",tag:"通用",name:"堅定不移",desc:"12 秒內沒有移動將獲得一層攻擊／攻速提升 2%、暴擊提升 3%、暴傷提升 4%，至多五層，移動後移除效果。",cd:"—"},
-  // ── 本體 防禦型 ──
-  {src:"本體",cat:"防禦",tag:"通用",name:"強化防禦",desc:"防禦力提升 9%。",cd:"—"},
-  {src:"本體",cat:"防禦",tag:"通用",name:"氣血充盈",desc:"最大生命值提升 9%。",cd:"—"},
-  {src:"本體",cat:"防禦",tag:"通用",name:"減輕傷勢",desc:"受到傷害降低 9%。",cd:"—"},
-  {src:"本體",cat:"防禦",tag:"通用",name:"弱點強化",desc:"弱點部位受到攻擊時，部位傷害降低 60%。",cd:"—"},
-  {src:"本體",cat:"防禦",tag:"通用",name:"軀幹應激",desc:"軀幹被攻擊時，20% 機率 5 秒內減傷 50%。",cd:"12s"},
-  {src:"本體",cat:"防禦",tag:"通用",name:"大腿應激",desc:"大腿受到攻擊，有 20% 機率 5 秒內減傷 50%。",cd:"12s"},
-  {src:"本體",cat:"防禦",tag:"通用",name:"手臂應激",desc:"手臂受到攻擊，有 20% 機率 5 秒內減傷 50%。",cd:"12s"},
-  {src:"本體",cat:"防禦",tag:"通用",name:"硬皮・抗揮砍",desc:"受到揮砍類傷害降低 20%。",cd:"—"},
-  {src:"本體",cat:"防禦",tag:"通用",name:"硬皮・抗鈍擊",desc:"受到鈍擊類傷害降低 20%。",cd:"—"},
-  {src:"本體",cat:"防禦",tag:"通用",name:"硬皮・抗穿刺",desc:"受到穿刺類傷害降低 20%。",cd:"—"},
-  {src:"本體",cat:"防禦",tag:"通用",name:"盾防反擊",desc:"消耗更多體力抵禦近戰攻擊並返還本次傷害 100% 於攻擊者。",cd:"—"},
-  {src:"本體",cat:"防禦",tag:"通用",name:"格擋反擊",desc:"使用非盾牌武器防禦近距離攻擊，有 30% 機率對攻擊者造成自身攻擊力 50% 傷害。",cd:"—"},
-  {src:"本體",cat:"防禦",tag:"通用",name:"忍耐",desc:"成功防禦後，6 秒內提升 80% 防禦力，並獲得 30 點韌性。",cd:"20s"},
-  {src:"本體",cat:"防禦",tag:"通用",name:"化解危機",desc:"受到攻擊時 15% 機率觸發，使該次傷害最多扣除 3% 最大生命數值的血量。",cd:"—"},
-  {src:"本體",cat:"防禦",tag:"通用",name:"硬化身軀",desc:"受到硬直效果時有 20% 機率獲得 3 秒霸體。",cd:"5s"},
-  {src:"本體",cat:"防禦",tag:"通用",name:"鋼鐵之軀",desc:"受到攻擊時若當前韌性條超過 50% 則免疫該次硬直。",cd:"—"},
-  {src:"本體",cat:"防禦",tag:"通用",name:"靈活逃脫",desc:"受到硬直效果時恢復 25 體力。",cd:"5s"},
-  {src:"本體",cat:"防禦",tag:"通用",name:"迴光返照",desc:"生命低於 30% 時會在 5 秒內恢復 20% 血量。",cd:"40s"},
-  {src:"本體",cat:"防禦",tag:"通用",name:"活血",desc:"生命回復速度提升 200%。",cd:"—"},
-  {src:"本體",cat:"防禦",tag:"通用",name:"靜態恢復",desc:"15 秒內沒有任何移動時，每秒恢復自身防禦 25% 的生命值。",cd:"—"},
-  {src:"本體",cat:"防禦",tag:"通用",name:"體能充沛",desc:"體力恢復效率更高，每次恢復體力可獲得該次恢復體力的 50% 作為額外恢復。",cd:"—"},
-  {src:"本體",cat:"防禦",tag:"通用",name:"極限閃避",desc:"成功閃避敵人攻擊後恢復 35 體力。",cd:"—"},
-  // ── 本體 其他 ──
-  {src:"本體",cat:"其他",tag:"通用",name:"步伐迅捷",desc:"移動速度提升 9%。",cd:"—"},
-  {src:"本體",cat:"其他",tag:"通用",name:"應激加速",desc:"受到攻擊時 20% 機率於 6 秒內移動速度提升 30%。",cd:"20s"},
-  {src:"本體",cat:"其他",tag:"通用",name:"輕裝速行",desc:"負重達到 50% 之前，移速提升 15%。",cd:"—"},
-  {src:"本體",cat:"其他",tag:"通用",name:"重裝奔襲",desc:"負重達到 90% 之後移速提升 40%。",cd:"—"},
-  {src:"本體",cat:"其他",tag:"通用",name:"不易察覺",desc:"被敵人發現時警戒增長速度降低 60%。",cd:"—"},
-  {src:"本體",cat:"其他",tag:"通用",name:"步履輕盈",desc:"腳步聲降低 50%。",cd:"—"},
-  {src:"本體",cat:"其他",tag:"通用",name:"耳聰",desc:"能夠聽到的聲音比常人低 15 分貝。",cd:"—"},
-  {src:"本體",cat:"其他",tag:"通用",name:"遠視",desc:"視野距離提升 10 米。",cd:"—"},
-  {src:"本體",cat:"其他",tag:"通用",name:"背包擴容",desc:"背包格子多 30 格。",cd:"—"},
-  {src:"本體",cat:"其他",tag:"通用",name:"駝牛",desc:"最大負重提升 60%。",cd:"—"},
-  {src:"本體",cat:"其他",tag:"通用",name:"忍辱負重",desc:"被攻擊時，有 30% 機率 10 秒內增加 50% 最大負重。",cd:"30s"},
-  {src:"本體",cat:"其他",tag:"通用",name:"緩慢吸收（食）",desc:"食物消耗降低 50%。",cd:"—"},
-  {src:"本體",cat:"其他",tag:"通用",name:"緩慢吸收（水）",desc:"水分消耗降低 50%。",cd:"—"},
-  {src:"本體",cat:"其他",tag:"通用",name:"耐飢",desc:"飽食度最大值提升 40%。",cd:"—"},
-  {src:"本體",cat:"其他",tag:"通用",name:"耐渴",desc:"最大水分提升 40%。",cd:"—"},
-  {src:"本體",cat:"其他",tag:"通用",name:"巧勁",desc:"體力消耗降低 30%。",cd:"—"},
-  {src:"本體",cat:"其他",tag:"通用",name:"快速成長",desc:"角色獲得成長經驗提升 80%。",cd:"—"},
-  {src:"本體",cat:"其他",tag:"通用",name:"天賦異稟",desc:"所有機率觸發的天賦機率提升 20%。",cd:"—"},
-  {src:"本體",cat:"其他",tag:"通用",name:"機敏",desc:"面對危險時產生反應的機率提升 35%。",cd:"—"},
-  // ── 職業專屬 ──
-  {src:"本體",cat:"其他",tag:"職業",name:"紡織加速",desc:"【雜工】紡織工作時間縮短 30%。",cd:"—"},
-  {src:"本體",cat:"其他",tag:"職業",name:"製陶加速",desc:"【雜工】製陶工作時間縮短 30%。",cd:"—"},
-  {src:"本體",cat:"其他",tag:"職業",name:"木石加速",desc:"【雜工】木石工作時間縮短 30%。",cd:"—"},
-  {src:"本體",cat:"其他",tag:"職業",name:"製皮加速",desc:"【雜工】製皮工作時間縮短 30%。",cd:"—"},
-  {src:"本體",cat:"其他",tag:"職業",name:"燒窯加速",desc:"【雜工】燒窯工作時間縮短 30%。",cd:"—"},
-  {src:"本體",cat:"其他",tag:"職業",name:"煉金加速",desc:"【匠人】煉金工作時間縮短 30%。",cd:"—"},
-  {src:"本體",cat:"其他",tag:"職業",name:"工匠製造加速",desc:"【匠人】工匠工作時間縮短 30%。",cd:"—"},
-  {src:"本體",cat:"其他",tag:"職業",name:"烹飪加速",desc:"【匠人】烹飪工作時間縮短 30%。",cd:"—"},
-  {src:"本體",cat:"其他",tag:"職業",name:"武器製造加速",desc:"【匠人】武器製造工作時間縮短 30%。",cd:"—"},
-  {src:"本體",cat:"其他",tag:"職業",name:"防具製造加速",desc:"【匠人】防具製造工作時間縮短 30%。",cd:"—"},
-  {src:"本體",cat:"其他",tag:"職業",name:"快速射擊",desc:"【獵手】弓類武器拉滿蓄力時間縮短 55%。",cd:"—"},
-  {src:"本體",cat:"其他",tag:"職業",name:"射手腳步",desc:"【獵手】使用弓類瞄準時移動速度提升 95%。",cd:"—"},
-  {src:"本體",cat:"攻擊",tag:"職業",name:"多重射擊",desc:"【獵手】使用弓類【射擊技巧】技能時，可以射出多支箭。",cd:"—"},
+// ── Google Sheets 設定 ──────────────────────────────
+const SHEET_ID = '1_XxFsdHOVrKgi0V8qoI42vHpYJjEy6SQ8DSTeZA0Bpo';
+const SHEET_CSV = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=0`;
+const PROXIES = [
+  u => `https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`,
+  u => `https://corsproxy.io/?url=${encodeURIComponent(u)}`,
+  u => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(u)}`,
 ];
 
-let curSrc="all",curCat="all",curTag="all";
-let tribes=[];
-let selectingFor=null;
+// ── 常數 ────────────────────────────────────────────
+const SRC_LBL = {DLC:'浮沙DLC', 本體:'本體'};
+const BD_SRC = {DLC:'bd-dlc', 本體:'bd-base'};
+const BD_TAG = {荒狼:'bd-wolf',蠻角:'bd-horn',戰士:'bd-warrior',衛士:'bd-guard',獵手:'bd-hunter',通用:'bd-general',職業:'bd-job'};
+const BD_CAT = {攻擊:'bd-atk',防禦:'bd-def',其他:'bd-oth'};
+const CAT_LBL = {攻擊:'攻擊型',防禦:'防禦型',其他:'其他'};
+const ACOLORS = ["#2C2C2A","#0d5c4a","#1a3a6b","#6b1a3a","#7a4a10","#2a5a10","#3a1a6b","#7a3a1a"];
 
-function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2)}
-function getTribe(id){return tribes.find(t=>t.id===id)}
+// ── 狀態 ────────────────────────────────────────────
+let DATA = [];
+let curSrc='all', curCat='all', curTag='all';
+let tribes = [];
+let selectingFor = null;
 
-function switchTab(t){
-  document.querySelectorAll(".tab").forEach((b,i)=>b.classList.toggle("on",["db","plan"][i]===t));
-  document.querySelectorAll(".panel").forEach(p=>p.classList.remove("on"));
-  document.getElementById("panel-"+t).classList.add("on");
+// ── CSV 載入（自動嘗試多個 Proxy）────────────────────
+async function fetchWithFallback() {
+  try {
+    const res = await fetch(SHEET_CSV, {signal: AbortSignal.timeout(5000)});
+    if (res.ok) { const text = await res.text(); if (text.includes(',')) return text; }
+  } catch(_) {}
+  for (const proxy of PROXIES) {
+    try {
+      const res = await fetch(proxy(SHEET_CSV), {signal: AbortSignal.timeout(8000)});
+      if (res.ok) { const text = await res.text(); if (text.includes(',')) return text; }
+    } catch(_) {}
+  }
+  throw new Error('所有連線方式都失敗，請確認試算表權限為「知道連結的人→檢視者」後點重新載入');
+}
+
+async function loadData() {
+  document.getElementById('db-loading').style.display = 'block';
+  document.getElementById('db-error').style.display = 'none';
+  document.getElementById('db-content').style.display = 'none';
+  try {
+    const text = await fetchWithFallback();
+    DATA = parseCSV(text);
+    document.getElementById('db-loading').style.display = 'none';
+    document.getElementById('db-content').style.display = 'block';
+    renderDB();
+  } catch (e) {
+    document.getElementById('db-loading').style.display = 'none';
+    document.getElementById('db-error').style.display = 'block';
+    document.getElementById('db-error').textContent = '❌ ' + e.message;
+    document.getElementById('db-content').style.display = 'block';
+    document.getElementById('rc').textContent = '0';
+    document.getElementById('grid').innerHTML = '';
+  }
+}
+
+function parseCSV(text) {
+  const lines = text.trim().split('\n');
+  if (lines.length < 2) return [];
+  // 跳過標題列（第一行）
+  return lines.slice(1).map(line => {
+    const cols = parseCSVLine(line);
+    return {
+      name: (cols[0]||'').trim(),
+      src:  (cols[1]||'').trim(),
+      cat:  (cols[2]||'').trim(),
+      tag:  (cols[3]||'').trim(),
+      desc: (cols[4]||'').trim(),
+      cd:   (cols[5]||'—').trim() || '—',
+    };
+  }).filter(d => d.name);
+}
+
+function parseCSVLine(line) {
+  const result = [];
+  let cur = '', inQ = false;
+  for (let i = 0; i < line.length; i++) {
+    const c = line[i];
+    if (c === '"') {
+      if (inQ && line[i+1] === '"') { cur += '"'; i++; }
+      else inQ = !inQ;
+    } else if (c === ',' && !inQ) {
+      result.push(cur); cur = '';
+    } else {
+      cur += c;
+    }
+  }
+  result.push(cur);
+  return result;
+}
+
+// ── UI 工具 ──────────────────────────────────────────
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2); }
+function getTribe(id) { return tribes.find(t => t.id === id); }
+function getInitials(name) { return name.slice(0, 2); }
+function avatarColor(id) {
+  const h = id.split('').reduce((a,c) => a + c.charCodeAt(0), 0);
+  return ACOLORS[h % ACOLORS.length];
+}
+function hl(t, q) {
+  if (!q) return t;
+  return t.replace(new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi'), '<mark>$1</mark>');
+}
+
+function switchTab(t) {
+  document.querySelectorAll('.tab').forEach((b,i) => b.classList.toggle('on', ['db','plan'][i]===t));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
+  document.getElementById('panel-'+t).classList.add('on');
   renderDB();
 }
-function sf(btn,g){
-  const map={src:"sg",cat:"cat-g",tag:"tg"};
-  document.querySelectorAll("#"+map[g]+" .chip").forEach(b=>b.classList.remove("on"));
-  btn.classList.add("on");
-  if(g==="src")curSrc=btn.dataset.v;
-  else if(g==="cat")curCat=btn.dataset.v;
+
+function sf(btn, g) {
+  const map = {src:'sg', cat:'cat-g', tag:'tg'};
+  document.querySelectorAll('#'+map[g]+' .chip').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  if (g==='src') curSrc=btn.dataset.v;
+  else if (g==='cat') curCat=btn.dataset.v;
   else curTag=btn.dataset.v;
   renderDB();
 }
-function hl(t,q){
-  if(!q)return t;
-  return t.replace(new RegExp("("+q.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+")","gi"),"<mark>$1</mark>");
-}
-function addTribe(){
-  const inp=document.getElementById("new-name");
-  const name=inp.value.trim();
-  if(!name)return;
-  tribes.push({id:uid(),name,talents:[null,null,null,null,null,null]});
-  inp.value="";renderPlan();
-}
-function deleteTribe(id){
-  tribes=tribes.filter(t=>t.id!==id);
-  if(selectingFor&&selectingFor.tribeId===id)cancelSelect();
+
+// ── 族人規劃 ─────────────────────────────────────────
+function addTribe() {
+  const inp = document.getElementById('new-name');
+  const name = inp.value.trim();
+  if (!name) return;
+  tribes.push({id:uid(), name, talents:[null,null,null,null,null,null]});
+  inp.value = '';
   renderPlan();
 }
-function renameTribe(id){
-  const t=getTribe(id);if(!t)return;
-  const n=prompt("重新命名族人：",t.name);
-  if(n&&n.trim()){t.name=n.trim();renderPlan();}
+
+function deleteTribe(id) {
+  tribes = tribes.filter(t => t.id !== id);
+  if (selectingFor && selectingFor.tribeId === id) cancelSelect();
+  renderPlan();
 }
-function startSelect(tribeId,slotIdx){
-  selectingFor={tribeId,slotIdx};
-  const t=getTribe(tribeId);
-  document.getElementById("banner-text").textContent=`正在為「${t.name}」第 ${slotIdx+1} 格選擇天賦`;
-  document.getElementById("selecting-banner").style.display="flex";
-  switchTab("db");
+
+function renameTribe(id) {
+  const t = getTribe(id); if (!t) return;
+  const n = prompt('重新命名族人：', t.name);
+  if (n && n.trim()) { t.name = n.trim(); renderPlan(); }
 }
-function cancelSelect(){
-  selectingFor=null;
-  document.getElementById("selecting-banner").style.display="none";
+
+function startSelect(tribeId, slotIdx) {
+  selectingFor = {tribeId, slotIdx};
+  const t = getTribe(tribeId);
+  document.getElementById('banner-text').textContent = `正在為「${t.name}」第 ${slotIdx+1} 格選擇天賦`;
+  document.getElementById('selecting-banner').style.display = 'flex';
+  switchTab('db');
+}
+
+function cancelSelect() {
+  selectingFor = null;
+  document.getElementById('selecting-banner').style.display = 'none';
   renderDB();
 }
-function pickTalent(name){
-  if(!selectingFor)return;
-  const t=getTribe(selectingFor.tribeId);if(!t)return;
-  if(t.talents.some(tt=>tt&&tt.name===name)){alert("此族人已擁有這個天賦！");return;}
-  t.talents[selectingFor.slotIdx]=DATA.find(d=>d.name===name);
-  cancelSelect();switchTab("plan");renderPlan();
-}
-function removeSlot(tribeId,slotIdx){
-  const t=getTribe(tribeId);if(t){t.talents[slotIdx]=null;renderPlan();}
-}
-function getInitials(name){return name.slice(0,2)}
-function avatarColor(id){const h=id.split("").reduce((a,c)=>a+c.charCodeAt(0),0);return ACOLORS[h%ACOLORS.length]}
 
-function renderPlan(){
-  const list=document.getElementById("tribe-list");
-  const empty=document.getElementById("empty-plan");
-  if(!tribes.length){list.innerHTML="";empty.style.display="block";return;}
-  empty.style.display="none";
-  list.innerHTML=tribes.map(t=>{
-    const filled=t.talents.filter(Boolean).length;
-    const slots=t.talents.map((tal,i)=>{
-      if(!tal)return`<div class="slot-empty-card" onclick="startSelect('${t.id}',${i})"><div class="slot-plus">＋</div><div class="slot-empty-label">天賦 ${i+1}</div></div>`;
-      const hasCd=tal.cd!=="—";
-      const cdHtml=tal.cd==="永久"?`<div class="slot-filled-cd"><span class="slot-cd-pill">永久效果</span></div>`:hasCd?`<div class="slot-filled-cd">冷卻 <b style="color:var(--ink2);font-weight:500">${tal.cd}</b></div>`:"";
-      return`<div class="slot-filled-card">
-<div class="slot-filled-head"><div class="slot-filled-name">${tal.name}</div><button class="slot-remove" onclick="removeSlot('${t.id}',${i})" title="移除">✕</button></div>
-<div class="slot-filled-badges">
-  <span class="badge ${BD_SRC[tal.src]}" style="font-size:9px;padding:1px 5px">${SRC[tal.src]}</span>
-  <span class="badge ${BD_CAT[tal.cat]}" style="font-size:9px;padding:1px 5px">${CAT_LBL[tal.cat]}</span>
-  <span class="badge ${BD_TAG[tal.tag]}" style="font-size:9px;padding:1px 5px">${tal.tag}</span>
-</div>
-<div class="slot-filled-desc">${tal.desc}</div>
-${cdHtml}
-</div>`;
-    }).join("");
-    return`<div class="tribe-card">
-<div class="tribe-head">
-  <div class="tribe-avatar" style="background:${avatarColor(t.id)}">${getInitials(t.name)}</div>
-  <div class="tribe-name-wrap"><div class="tribe-name">${t.name}</div><div class="tribe-count">${filled} / 6 天賦已配置</div></div>
-  <div class="tribe-actions">
-    <button class="icon-btn edit" onclick="renameTribe('${t.id}')" title="重新命名"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M9 2l2 2-7 7H2v-2z"/></svg></button>
-    <button class="icon-btn" onclick="deleteTribe('${t.id}')" title="刪除"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.3"><polyline points="2,3 11,3"/><path d="M4,3V2h5v1"/><path d="M5,5v5M8,5v5"/><path d="M3,3l.5,8h6L10,3"/></svg></button>
+function pickTalent(name) {
+  if (!selectingFor) return;
+  const t = getTribe(selectingFor.tribeId); if (!t) return;
+  if (t.talents.some(tt => tt && tt.name === name)) { alert('此族人已擁有這個天賦！'); return; }
+  t.talents[selectingFor.slotIdx] = DATA.find(d => d.name === name);
+  cancelSelect();
+  switchTab('plan');
+  renderPlan();
+}
+
+function removeSlot(tribeId, slotIdx) {
+  const t = getTribe(tribeId);
+  if (t) { t.talents[slotIdx] = null; renderPlan(); }
+}
+
+function renderPlan() {
+  const list = document.getElementById('tribe-list');
+  const empty = document.getElementById('empty-plan');
+  if (!tribes.length) { list.innerHTML = ''; empty.style.display = 'block'; return; }
+  empty.style.display = 'none';
+
+  list.innerHTML = tribes.map(t => {
+    const filled = t.talents.filter(Boolean).length;
+    const slots = t.talents.map((tal, i) => {
+      if (!tal) return `<div class="slot-empty-card" onclick="startSelect('${t.id}',${i})"><div class="slot-plus">＋</div><div class="slot-empty-label">天賦 ${i+1}</div></div>`;
+      const hasCd = tal.cd !== '—';
+      const cdHtml = tal.cd === '永久'
+        ? `<div class="slot-filled-cd"><span class="slot-cd-pill">永久效果</span></div>`
+        : hasCd ? `<div class="slot-filled-cd">冷卻 <b style="color:var(--ink2);font-weight:500">${tal.cd}</b></div>` : '';
+      return `<div class="slot-filled-card">
+  <div class="slot-filled-head"><div class="slot-filled-name">${tal.name}</div><button class="slot-remove" onclick="removeSlot('${t.id}',${i})" title="移除">✕</button></div>
+  <div class="slot-filled-badges">
+    <span class="badge ${BD_SRC[tal.src]||''}" style="font-size:9px;padding:1px 5px">${SRC_LBL[tal.src]||tal.src}</span>
+    <span class="badge ${BD_CAT[tal.cat]||''}" style="font-size:9px;padding:1px 5px">${CAT_LBL[tal.cat]||tal.cat}</span>
+    <span class="badge ${BD_TAG[tal.tag]||''}" style="font-size:9px;padding:1px 5px">${tal.tag}</span>
   </div>
-</div>
-<div class="tribe-slots">${slots}</div>
+  <div class="slot-filled-desc">${tal.desc}</div>
+  ${cdHtml}
 </div>`;
-  }).join("");
+    }).join('');
+
+    return `<div class="tribe-card">
+  <div class="tribe-head">
+    <div class="tribe-avatar" style="background:${avatarColor(t.id)}">${getInitials(t.name)}</div>
+    <div class="tribe-name-wrap"><div class="tribe-name">${t.name}</div><div class="tribe-count">${filled} / 6 天賦已配置</div></div>
+    <div class="tribe-actions">
+      <button class="icon-btn edit" onclick="renameTribe('${t.id}')" title="重新命名"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M9 2l2 2-7 7H2v-2z"/></svg></button>
+      <button class="icon-btn" onclick="deleteTribe('${t.id}')" title="刪除"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.3"><polyline points="2,3 11,3"/><path d="M4,3V2h5v1"/><path d="M5,5v5M8,5v5"/><path d="M3,3l.5,8h6L10,3"/></svg></button>
+    </div>
+  </div>
+  <div class="tribe-slots">${slots}</div>
+</div>`;
+  }).join('');
 }
 
-function renderDB(){
-  const q=document.getElementById("q").value.trim().toLowerCase();
-  const isSel=!!selectingFor;
-  const list=DATA.filter(d=>
-    (curSrc==="all"||d.src===curSrc)&&
-    (curCat==="all"||d.cat===curCat)&&
-    (curTag==="all"||d.tag===curTag)&&
-    (!q||d.name.toLowerCase().includes(q)||d.desc.toLowerCase().includes(q))
+// ── 天賦資料庫渲染 ───────────────────────────────────
+function renderDB() {
+  const q = document.getElementById('q') ? document.getElementById('q').value.trim().toLowerCase() : '';
+  const isSel = !!selectingFor;
+  const list = DATA.filter(d =>
+    (curSrc==='all' || d.src===curSrc) &&
+    (curCat==='all' || d.cat===curCat) &&
+    (curTag==='all' || d.tag===curTag) &&
+    (!q || d.name.toLowerCase().includes(q) || d.desc.toLowerCase().includes(q))
   );
-  document.getElementById("rc").textContent=list.length;
-  let pickedNames=new Set();
-  if(isSel){const t=getTribe(selectingFor.tribeId);if(t)t.talents.forEach(tt=>{if(tt)pickedNames.add(tt.name);})}
-  document.getElementById("grid").innerHTML=list.map(d=>{
-    const isPicked=pickedNames.has(d.name);
-    const hasCd=d.cd!=="—";
-    const cdHtml=d.cd==="永久"?`<div style="margin-top:.4rem"><span class="cd-pill">永久效果</span></div>`:hasCd?`<div class="tcard-cd">冷卻 <b style="color:var(--ink2);font-weight:500">${d.cd}</b></div>`:"";
-    return`<div class="tcard${isSel?" selectable":""}${isPicked?" picked":""}" onclick="${isSel&&!isPicked?"pickTalent('"+d.name.replace(/'/g,"\\'")+"')":""}">
-<div class="tcard-top">
-  <div class="tcard-name">${hl(d.name,q)}</div>
-  <div class="badges">
-    <span class="badge ${BD_SRC[d.src]}">${SRC[d.src]}</span>
-    <span class="badge ${BD_CAT[d.cat]}">${CAT_LBL[d.cat]}</span>
-    <span class="badge ${BD_TAG[d.tag]}">${d.tag}</span>
+  const rcEl = document.getElementById('rc');
+  if (rcEl) rcEl.textContent = list.length;
+
+  let pickedNames = new Set();
+  if (isSel) {
+    const t = getTribe(selectingFor.tribeId);
+    if (t) t.talents.forEach(tt => { if (tt) pickedNames.add(tt.name); });
+  }
+
+  const grid = document.getElementById('grid');
+  if (!grid) return;
+
+  if (!list.length) {
+    grid.innerHTML = '<div style="padding:2rem;text-align:center;color:var(--ink3);grid-column:1/-1">找不到相符的天賦</div>';
+    return;
+  }
+
+  grid.innerHTML = list.map(d => {
+    const isPicked = pickedNames.has(d.name);
+    const hasCd = d.cd !== '—';
+    const cdHtml = d.cd === '永久'
+      ? `<div style="margin-top:.4rem"><span class="cd-pill">永久效果</span></div>`
+      : hasCd ? `<div class="tcard-cd">冷卻 <b style="color:var(--ink2);font-weight:500">${d.cd}</b></div>` : '';
+    return `<div class="tcard${isSel?' selectable':''}${isPicked?' picked':''}" onclick="${isSel&&!isPicked?"pickTalent('"+d.name.replace(/'/g,"\\'")+"')":""}">
+  <div class="tcard-top">
+    <div class="tcard-name">${hl(d.name,q)}</div>
+    <div class="badges">
+      <span class="badge ${BD_SRC[d.src]||''}">${SRC_LBL[d.src]||d.src}</span>
+      <span class="badge ${BD_CAT[d.cat]||''}">${CAT_LBL[d.cat]||d.cat}</span>
+      <span class="badge ${BD_TAG[d.tag]||''}">${d.tag}</span>
+    </div>
   </div>
-</div>
-<div class="tcard-desc">${hl(d.desc,q)}</div>
-${cdHtml}
-${isSel?`<button class="add-btn" onclick="event.stopPropagation();${isPicked?"":"pickTalent('"+d.name.replace(/'/g,"\\'")+"')"}">${isPicked?"✕":"＋"}</button>`:""}
+  <div class="tcard-desc">${hl(d.desc,q)}</div>
+  ${cdHtml}
+  ${isSel?`<button class="add-btn" onclick="event.stopPropagation();${isPicked?'':'pickTalent(\''+d.name.replace(/'/g,"\\'")+'\')' }">${isPicked?'✕':'＋'}</button>`:''}
 </div>`;
-  }).join("");
+  }).join('');
 }
 
-renderDB();renderPlan();
+// ── 啟動 ─────────────────────────────────────────────
+loadData();
 </script>
+</body>
+</html>
