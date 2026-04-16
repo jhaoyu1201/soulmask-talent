@@ -236,6 +236,20 @@ let curSrc='all', curCat='all', curTag='all';
 let tribes = [];
 let selectingFor = null;
 
+// ── localStorage 持久化 ──────────────────────────────
+function saveTribes() {
+  try {
+    localStorage.setItem('sm_tribes', JSON.stringify(tribes));
+  } catch(_) {}
+}
+
+function loadTribes() {
+  try {
+    const saved = localStorage.getItem('sm_tribes');
+    if (saved) tribes = JSON.parse(saved);
+  } catch(_) { tribes = []; }
+}
+
 // ── CSV 載入（自動嘗試多個 Proxy）────────────────────
 async function fetchWithFallback() {
   try {
@@ -343,19 +357,21 @@ function addTribe() {
   if (!name) return;
   tribes.push({id:uid(), name, talents:[null,null,null,null,null,null], notes:['','','','','','']});
   inp.value = '';
+  saveTribes();
   renderPlan();
 }
 
 function deleteTribe(id) {
   tribes = tribes.filter(t => t.id !== id);
   if (selectingFor && selectingFor.tribeId === id) cancelSelect();
+  saveTribes();
   renderPlan();
 }
 
 function renameTribe(id) {
   const t = getTribe(id); if (!t) return;
   const n = prompt('重新命名族人：', t.name);
-  if (n && n.trim()) { t.name = n.trim(); renderPlan(); }
+  if (n && n.trim()) { t.name = n.trim(); saveTribes(); renderPlan(); }
 }
 
 function startSelect(tribeId, slotIdx) {
@@ -379,17 +395,18 @@ function pickTalent(name) {
   t.talents[selectingFor.slotIdx] = DATA.find(d => d.name === name);
   cancelSelect();
   switchTab('plan');
+  saveTribes();
   renderPlan();
 }
 
 function removeSlot(tribeId, slotIdx) {
   const t = getTribe(tribeId);
-  if (t) { t.talents[slotIdx] = null; t.notes[slotIdx] = ''; renderPlan(); }
+  if (t) { t.talents[slotIdx] = null; t.notes[slotIdx] = ''; saveTribes(); renderPlan(); }
 }
 
 function updateNote(tribeId, slotIdx, val) {
   const t = getTribe(tribeId);
-  if (t) t.notes[slotIdx] = val;
+  if (t) { t.notes[slotIdx] = val; saveTribes(); }
 }
 
 function renderPlan() {
@@ -487,6 +504,7 @@ function renderDB() {
 }
 
 // ── 啟動 ─────────────────────────────────────────────
+loadTribes();
 loadData();
 </script>
 </body>
